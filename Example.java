@@ -5,57 +5,39 @@ import java.util.Scanner;
 public class Example {
 
     private static List<Actions> list = new ArrayList<Actions>();
+    private static Scanner scanner;
 
     public static void main(String[] args) {
 
         Actions actions = null;
-        System.out.println("Hello what type of object you want to create");
-        System.out.println("1: Car\n2: Motorcicle\n3: Airplane\n4: exit\n");
-        Scanner scanner = new Scanner(System.in);
-        int option = scanner.nextInt();
+        scanner = new Scanner(System.in);
+        int option = question();
 
         while (option != 4) {
             switch (option) {
                 case 1:
-                    // scanning information
                     scanner = new Scanner(System.in);
-                    String name = getData(scanner, "Car name ");
-                    String model = getData(scanner, "Car model ");
-                    int doors = getNumber(scanner, "Car doors ");
-                    // ----| creating the object | ----
-                    actions = new Car(name, model, doors);
-                    list.add(actions);
-                    System.out.println("---> Object saved");
+                    actions = new Car(getData("Car name "), getData("Car model "), getNumber("Car doors "));
                     break;
                 case 2:
-                    // scanning information
                     scanner = new Scanner(System.in);
-                    String name2 = getData(scanner, "Motorcycle name ");
-                    String model2 = getData(scanner, "Motorcycle model ");
-                    String color = getData(scanner, "Motorcycle color ");
-                    // ----| creating the object | ----
-                    actions = new Motorcycle(name2, model2, color);
-                    list.add(actions);
-                    System.out.println("---> Object saved");
+                    actions = new Motorcycle(getData("Motorcycle name "),
+                            getData("Motorcycle model "), getData("Motorcycle color "));
                     break;
                 case 3:
-                    // scanning information
                     scanner = new Scanner(System.in);
-                    String name3 = getData(scanner, "Airplane name: ");
-                    String model3 = getData(scanner, "Airplane model: ");
-                    int engine = getNumber(scanner, "Airplane engines: ");
-                    // ----| creating the object | ----
-                    actions = new Airplane(name3, model3, engine);
-                    list.add(actions);
-                    System.out.println("---> Object saved");
+                    actions = new Airplane(getData("Airplane name: "), getData("Airplane model: "),
+                            getNumber("Airplane engines: "));
                     break;
+            }
+            // saving data
+            if (actions != null) {
+                list.add(actions);
+                System.out.println("---> Object saved");
             }
 
             // what should i do?
-            System.out.println("\n\nHello what type of object you want to create");
-            System.out.println("1: Car\n2: Motorcicle\n3: Airplane\n4: exit\n");
-            scanner = new Scanner(System.in);
-            option = scanner.nextInt();
+            option = question();
         }
         scanner.close();
         System.out.println("\nWe have " + list.size() + " Objects ");
@@ -63,13 +45,27 @@ public class Example {
 
     }
 
-    private static String getData(Scanner scanner, String msg) {
+    private static int question() {
+        System.out.println("Hello what type of object you want to create");
+        System.out.println("1: Car\n2: Motorcicle\n3: Airplane\n4: exit\n");
+        int option = 0;
+        try {
+            option = scanner.nextInt();
+        } catch (Exception e) {
+            System.err.println("Input only numbers :: ");
+            scanner = new Scanner(System.in);
+        }
+        return option;
+
+    }
+
+    private static String getData(String msg) {
         System.out.println(msg);
         return scanner.nextLine();
 
     }
 
-    private static int getNumber(Scanner scanner, String msg) {
+    private static int getNumber(String msg) {
         System.out.println(msg);
         return scanner.nextInt();
 
